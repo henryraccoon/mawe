@@ -1,0 +1,279 @@
+/* Add your CSS styles here */
+body {
+  display: flex;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+#sidebar {
+  width: 25%;
+  background-color: #f2f2f2;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#sidebar img {
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+#sidebar p {
+  margin-top: 10px;
+  text-align: center;
+}
+
+#sidebar h3 {
+  margin-top: 20px;
+}
+
+#sidebar .form-group {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+#sidebar label {
+  margin-left: 5px;
+}
+
+#sidebar input[type="text"] {
+  display: none;
+  margin-top: 10px;
+  padding: 5px;
+  width: 100%;
+}
+
+#sidebar {
+  width: 25%;
+  background-color: #f2f2f2;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 400;
+}
+
+#search-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+#search-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#search-btn:hover {
+  background-color: #45a049;
+}
+
+#map {
+  flex: 1;
+  background-color: #f9f9f9;
+  padding: 20px;
+  height: 650px;
+}
+
+#results {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  max-width: 480px;
+}
+
+#stations-list,
+#weather-alerts {
+  flex: 1;
+  margin-bottom: 5px;
+  word-wrap: break-word;
+}
+
+/* Weather Alerts Section */
+#weather-alerts {
+  background-color: #f2f2f2;
+  display: flex;
+}
+
+#weather-alerts h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* Current Weather */
+.current-weather {
+  width: 45%;
+  float: left;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.current-weather img {
+  width: 60px;
+  height: 40px;
+  margin-right: 20px;
+}
+
+.weather-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.weather-field {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.field-label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.field-value {
+  font-weight: normal;
+}
+
+/* Nearest Stations */
+#stations-list {
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+#stations-list h2 {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+#stations-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#stations #stations-list li {
+  margin-bottom: 10px;
+}
+
+.station:hover {
+  background-color: #ede5e5;
+}
+
+.current-preview {
+  background-color: #e3dbdb;
+}
+
+.station-distance {
+  font-weight: bold;
+  margin-right: 5px;
+}
+.station-mode,
+.station-towards,
+.station-buses {
+  display: block;
+}
+
+.station-mode {
+  font-weight: bold;
+}
+
+.station-towards {
+  color: #666;
+}
+
+.station-buses {
+  color: #373232;
+}
+
+/* Expected Today */
+.expected-today {
+  margin-top: 10px;
+  width: 45%;
+  padding: 10px;
+}
+
+.expected-today h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+/* Weather Advice */
+.weather-advice {
+  width: 100%;
+  padding: 5px;
+}
+
+.weather-advice h4 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.weather-advice p {
+  font-size: 14px;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+/* Additional CSS styles for enhanced visual appeal */
+
+/* Add a subtle box-shadow to the sidebar */
+#sidebar {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the map section with a border and padding */
+#map {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Style the results section with a border and background color */
+#results {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+/* Style the nearest stations and weather alerts with a subtle background color */
+#stations-list,
+#weather-alerts {
+  background-color: #f9f9f9;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+#pagination {
+  text-align: center;
+  margin-top: 0px;
+}
+
+#pagination button {
+  padding: 8px 16px;
+  margin: 0 0px;
+}
+
+#pagination .hidden {
+  display: none;
+}
+
+#pagination button:hover {
+  background-color: #ddd;
+}
