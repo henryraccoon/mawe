@@ -1,5 +1,10 @@
 "use strict";
 const postCodeCheckbox = document.getElementById("post-code");
+const formInput = document.querySelector("#form-group-input");
+const autoLocationCheckbox = document.querySelector(
+  ".form-group-auto-location"
+);
+const searchButton = document.getElementById("submit-button");
 const transportContainer = document.getElementById("stations-list");
 const postCodeInput = document.getElementById("post-code-input");
 const weatherContainer = document.getElementById("weather-alerts");
@@ -60,6 +65,7 @@ const greyIcon = new L.Icon({
 // enter postcode check box
 postCodeCheckbox.addEventListener("change", function () {
   postCodeInput.style.display = this.checked ? "block" : "none";
+  searchButton.style.display = this.checked ? "block" : "none";
 });
 
 // getting geolocation
@@ -74,17 +80,54 @@ let currentPage = 1;
 const getGeolocation = async function () {
   return new Promise(function (resolve, reject) {
     navigator.geolocation
-      ? navigator.geolocation.getCurrentPosition(function (position) {
-          latitude = position.coords.latitude;
-          longitude = position.coords.longitude;
-          // latitude = 51.4192772;
-          // longitude = -0.3246571;
-
-          console.log(latitude, longitude);
-          resolve();
-        }, reject)
+      ? navigator.geolocation.getCurrentPosition(
+          function (position) {
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+            resolve();
+            console.log("auto:", latitude, longitude);
+          },
+          function (err) {
+            alert("could not get your position. try using post code.");
+            autoLocationCheckbox.style.display = "none";
+            reject(`${err.message}`);
+          }
+        )
       : alert("could not get your position. try using post code.");
   });
+};
+
+formInput.addEventListener("submit", async function (e) {
+  e.preventDefault();
+  await getLocationByPostcode(postCodeInput.value);
+  console.log("postcode:", latitude, longitude);
+  if (!map) {
+    renderMap();
+    await renderWeather();
+    await renderResults();
+    postCodeInput.style.display = "none";
+  } else {
+    map.setView([latitude, longitude], mapZoom);
+    const marker = L.marker([latitude, longitude]).addTo(map);
+    await renderWeather();
+    await renderResults();
+    postCodeInput.value = "";
+  }
+});
+
+const getLocationByPostcode = async function (postcode) {
+  try {
+    const response = await fetch(
+      `https://api.postcodes.io/postcodes/${postcode}`
+    );
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(`${data.error}`);
+    latitude = data.result.latitude;
+    longitude = data.result.longitude;
+  } catch (err) {
+    alert(err);
+  }
 };
 
 // rendering map
@@ -180,7 +223,7 @@ const displayJoinedResults = function (responseData) {
   responseData.lines.forEach((line) => lines.push(line.name));
   const markup = `
     <ul>
-      <li class="station" data-id="${responseData.id}>
+      <li class="station" data-id="${responseData.id}">
         <span class="station-distance">${Math.trunc(
           responseData.distance
         )}m.</span>
@@ -208,10 +251,9 @@ const nearestStops = async function () {
     `https://api.tfl.gov.uk/StopPoint/?lat=${latitude}&lon=${longitude}&stopTypes=NaptanPublicBusCoachTram,NaptanRailStation,NaptanFerryPort,NaptanMetroStation&radius=${radius}`
   );
   const tflData = await tflStops.json();
-  console.log(tflData.stopPoints);
+
   const allStationsRaw = tflData.stopPoints;
   allStations = allStationsRaw.filter((station) => station.lines.length !== 0);
-  console.log(allStations);
 };
 
 const renderResults = async function (page) {
