@@ -18,6 +18,7 @@ const API_KEY_WEATHER = "4385fe1353574335bc6142923230506";
 let radius = 300; // metres
 let mapZoom = 16;
 
+//done//\/
 const goldIcon = new L.Icon({
   iconUrl:
     "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png",
@@ -61,13 +62,17 @@ const greyIcon = new L.Icon({
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
 });
+//done//\
 
+///done\/
 // enter postcode check box
 postCodeCheckbox.addEventListener("change", function () {
   postCodeInput.style.display = this.checked ? "block" : "none";
   searchButton.style.display = this.checked ? "block" : "none";
 });
+///done/\
 
+///done\/
 // getting geolocation
 let latitude;
 let longitude;
@@ -96,6 +101,7 @@ const getGeolocation = async function () {
       : alert("could not get your position. try using post code.");
   });
 };
+////done/\
 
 formInput.addEventListener("submit", async function (e) {
   e.preventDefault();
@@ -115,6 +121,7 @@ formInput.addEventListener("submit", async function (e) {
   }
 });
 
+////done\/
 const getLocationByPostcode = async function (postcode) {
   try {
     const response = await fetch(
@@ -129,9 +136,11 @@ const getLocationByPostcode = async function (postcode) {
     alert(err);
   }
 };
+/////done/\
 
 // rendering map
 
+///done\/
 const renderMap = function () {
   map = L.map("map").setView([latitude, longitude], mapZoom);
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -235,7 +244,9 @@ const displayJoinedResults = function (responseData) {
       `;
   transportContainer.insertAdjacentHTML("afterbegin", markup);
 };
+////done/\
 
+//donde\/
 const getSearchResultsPage = function (arrayOfStations, page = currentPage) {
   currentPage = page;
   const start = (page - 1) * 4;
@@ -243,7 +254,9 @@ const getSearchResultsPage = function (arrayOfStations, page = currentPage) {
 
   return arrayOfStations.slice(start, end);
 };
+////done/\
 
+////done\/
 // tfl api
 
 const nearestStops = async function () {
@@ -255,7 +268,9 @@ const nearestStops = async function () {
   const allStationsRaw = tflData.stopPoints;
   allStations = allStationsRaw.filter((station) => station.lines.length !== 0);
 };
+////done/\
 
+////done \/
 const renderResults = async function (page) {
   await nearestStops();
   transportContainer.innerHTML = "";
@@ -282,7 +297,9 @@ const renderResults = async function (page) {
 
   paginationButtons();
 };
+/////done/\
 
+/////done\/
 const moveToPopup = function (event) {
   const stationElement = event.target.closest(".station");
 
@@ -343,7 +360,9 @@ checkboxGoodWalker.addEventListener("change", function () {
     map.setView([latitude, longitude], mapZoom);
   }
 });
+////done/\
 
+////done\/
 const paginationButtons = function () {
   const numPages = Math.ceil(allStations.length / 4);
   nextButton.innerHTML = "";
@@ -396,6 +415,8 @@ buttonContainer.addEventListener("click", function (e) {
   const goToPage = +btn.dataset.goto;
   renderResults(goToPage);
 });
+
+///done/\
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

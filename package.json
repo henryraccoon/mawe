@@ -1,0 +1,14 @@
+{
+  "name": "project-mawe",
+  "version": "1.0.0",
+  "description": "Public transport application with weather alerts",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "author": "Hennadiy Pohribnyy",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.9.3"
+  }
+}
