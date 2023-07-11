@@ -1,4 +1,4 @@
-import { RADIUS, API_KEY_WEATHER } from "./config";
+import { RADIUS, MAPZOOM, API_KEY_WEATHER } from "./config";
 
 const autoLocationCheckbox = document.querySelector(
   ".form-group-auto-location"
@@ -12,6 +12,8 @@ export const state = {
   allStations: [],
   currentMarker: "",
   currentPage: 1,
+  radius: RADIUS,
+  mapZoom: MAPZOOM,
 };
 //51.4192772 -0.3246571
 
@@ -54,12 +56,14 @@ export const getLocationByPostcode = async function (postcode) {
 
 export const nearestStops = async function () {
   const tflStops = await fetch(
-    `https://api.tfl.gov.uk/StopPoint/?lat=${state.latitude}&lon=${state.longitude}&stopTypes=NaptanPublicBusCoachTram,NaptanRailStation,NaptanFerryPort,NaptanMetroStation&radius=${RADIUS}`
+    `https://api.tfl.gov.uk/StopPoint/?lat=${state.latitude}&lon=${state.longitude}&stopTypes=NaptanPublicBusCoachTram,NaptanRailStation,NaptanFerryPort,NaptanMetroStation&radius=${state.radius}`
   );
   const tflData = await tflStops.json();
 
   const allStationsRaw = tflData.stopPoints;
-  allStations = allStationsRaw.filter((station) => station.lines.length !== 0);
+  state.allStations = allStationsRaw.filter(
+    (station) => station.lines.length !== 0
+  );
 };
 
 /// weather api

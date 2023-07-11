@@ -11,8 +11,13 @@ export const displayBusResults = function (responseData) {
             <span class="station-distance">${Math.trunc(
               responseData.distance
             )}m.</span>
-            <span class="station-name">${responseData.commonName}</span>
-            <span class="station-mode">Mode:${responseData.modes[0]}</span>
+            <span class="station-name">${responseData.commonName}(${
+    responseData.indicator
+  })</span>
+            <span class="station-mode">Mode: ${
+              responseData.modes[0][0].toUpperCase() +
+              responseData.modes[0].slice(1)
+            }</span>
             <span class="station-buses">Buses:${buses} </span>
             <span class="station-towards">${
               responseData.additionalProperties[1]?.key
@@ -24,9 +29,10 @@ export const displayBusResults = function (responseData) {
   transportContainer.insertAdjacentHTML("afterbegin", markup);
 };
 
-export const displayTrainTubeResults = function (responseData) {
+export const displayOtherResults = function (responseData) {
   let lines = [];
   responseData.lines.forEach((line) => lines.push(line.name));
+
   const markup = `
         <ul>
           <li class="station" data-id="${responseData.id}">
@@ -34,7 +40,10 @@ export const displayTrainTubeResults = function (responseData) {
               responseData.distance
             )}m.</span>
             <span class="station-name">${responseData.commonName}</span>
-            <span class="station-mode">Mode:${responseData.modes[0]}</span>
+            <span class="station-mode">Mode: ${
+              responseData.modes[0][0].toUpperCase() +
+              responseData.modes[0].slice(1).replace("-", " ")
+            }</span>
             <span class="station-buses">Lines:${lines} </span>
           </li>
         </ul>
@@ -47,6 +56,9 @@ export const displayJoinedResults = function (responseData) {
   let modes = [];
   responseData.modes?.forEach((mode) => modes.push(mode));
   responseData.lines.forEach((line) => lines.push(line.name));
+  const modesFixed = modes.map(
+    (mode) => mode.toUpperCase() + mode.slice(1).replace("-", " ")
+  );
   const markup = `
         <ul>
           <li class="station" data-id="${responseData.id}">
@@ -54,7 +66,7 @@ export const displayJoinedResults = function (responseData) {
               responseData.distance
             )}m.</span>
             <span class="station-name">${responseData.commonName}</span>
-            <span class="station-mode">Mode:${modes}</span>
+            <span class="station-mode">Modes: ${modesFixed}</span>
             <span class="station-buses">Lines:${lines} </span>
           </li>
         </ul>

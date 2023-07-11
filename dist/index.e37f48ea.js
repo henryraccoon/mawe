@@ -582,7 +582,6 @@ var _mapView = require("./views/mapView");
 var _tflResultsView = require("./views/tflResultsView");
 var _weatherView = require("./views/weatherView");
 var _paginationView = require("./views/paginationView");
-var _config = require("./config");
 const postCodeCheckbox = document.getElementById("post-code");
 const formInput = document.querySelector("#form-group-input");
 const searchButton = document.getElementById("submit-button");
@@ -593,16 +592,19 @@ let checkboxGoodWalker = document.getElementById("good-walker");
 const renderResults = async function(page) {
     await _model.nearestStops();
     transportContainer.innerHTML = "";
-    _paginationView.getSearchResultsPage(allStations, page).sort((a, b)=>b.distance - a.distance).forEach((point)=>{
+    _paginationView.getSearchResultsPage(_model.state.allStations, page).sort((a, b)=>b.distance - a.distance).forEach((point)=>{
         if (point.modes.length === 1 && point.modes[0] === "bus") {
             _mapView.addBusMarker(point);
             _tflResultsView.displayBusResults(point);
         } else if (point.modes.length === 1 && point.modes[0] === "tube") {
-            _mapView.addTrainTubeMarker(point);
-            _tflResultsView.displayTrainTubeResults(point);
+            _mapView.addOtherMarker(point);
+            _tflResultsView.displayOtherResults(point);
+        } else if (point.modes.length === 1 && point.modes[0] === "river-bus") {
+            _mapView.addOtherMarker(point);
+            _tflResultsView.displayOtherResults(point);
         } else if (point.modes.length === 1 && point.modes[0] === "national-rail") {
-            _mapView.addTrainTubeMarker(point);
-            _tflResultsView.displayTrainTubeResults(point);
+            _mapView.addOtherMarker(point);
+            _tflResultsView.displayOtherResults(point);
         } else if (point.lines.length > 0) {
             _mapView.addJoinedMarker(point);
             _tflResultsView.displayJoinedResults(point);
@@ -640,7 +642,7 @@ formInput.addEventListener("submit", async function(e) {
         _model.state.map.setView([
             _model.state.latitude,
             _model.state.longitude
-        ], _config.MAPZOOM);
+        ], _model.state.mapZoom);
         const marker = L.marker([
             _model.state.latitude,
             _model.state.longitude
@@ -653,29 +655,29 @@ formInput.addEventListener("submit", async function(e) {
 checkboxLazyWalker.addEventListener("change", function() {
     if (this.checked) {
         if (checkboxGoodWalker.checked) checkboxGoodWalker.checked = false;
-        _config.RADIUS = 200;
-        _config.MAPZOOM = 16;
+        _model.state.radius = 200;
+        _model.state.mapZoom = 16;
         transportContainer.innerHTML = "";
         renderResults();
         _paginationView.paginationButtons();
         _model.state.map.setView([
             _model.state.latitude,
             _model.state.longitude
-        ], _config.MAPZOOM);
+        ], _model.state.mapZoom);
     }
 });
 checkboxGoodWalker.addEventListener("change", function() {
     if (this.checked) {
         if (checkboxLazyWalker.checked) checkboxLazyWalker.checked = false;
-        _config.RADIUS = 800;
-        _config.MAPZOOM = 15;
+        _model.state.radius = 800;
+        _model.state.mapZoom = 15;
         transportContainer.innerHTML = "";
         renderResults();
         _paginationView.paginationButtons();
         _model.state.map.setView([
             _model.state.latitude,
             _model.state.longitude
-        ], _config.MAPZOOM);
+        ], _model.state.mapZoom);
     }
 });
 const init = async function() {
@@ -690,7 +692,7 @@ const init = async function() {
 };
 init();
 
-},{"./model":"Y4A21","./views/mapView":"b2AA2","./views/tflResultsView":"gnEnQ","./views/weatherView":"jcuJR","./views/paginationView":"6z7bi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config":"k5Hzs"}],"Y4A21":[function(require,module,exports) {
+},{"./model":"Y4A21","./views/mapView":"b2AA2","./views/tflResultsView":"gnEnQ","./views/weatherView":"jcuJR","./views/paginationView":"6z7bi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"Y4A21":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
@@ -706,7 +708,9 @@ const state = {
     map,
     allStations: [],
     currentMarker: "",
-    currentPage: 1
+    currentPage: 1,
+    radius: (0, _config.RADIUS),
+    mapZoom: (0, _config.MAPZOOM)
 };
 const getGeolocation = async function() {
     return new Promise(function(resolve, reject) {
@@ -733,10 +737,10 @@ const getLocationByPostcode = async function(postcode) {
     }
 };
 const nearestStops = async function() {
-    const tflStops = await fetch(`https://api.tfl.gov.uk/StopPoint/?lat=${state.latitude}&lon=${state.longitude}&stopTypes=NaptanPublicBusCoachTram,NaptanRailStation,NaptanFerryPort,NaptanMetroStation&radius=${(0, _config.RADIUS)}`);
+    const tflStops = await fetch(`https://api.tfl.gov.uk/StopPoint/?lat=${state.latitude}&lon=${state.longitude}&stopTypes=NaptanPublicBusCoachTram,NaptanRailStation,NaptanFerryPort,NaptanMetroStation&radius=${state.radius}`);
     const tflData = await tflStops.json();
     const allStationsRaw = tflData.stopPoints;
-    allStations = allStationsRaw.filter((station)=>station.lines.length !== 0);
+    state.allStations = allStationsRaw.filter((station)=>station.lines.length !== 0);
 };
 const fetchWeatherData = async function() {
     try {
@@ -794,7 +798,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "renderMap", ()=>renderMap);
 parcelHelpers.export(exports, "addBusMarker", ()=>addBusMarker);
-parcelHelpers.export(exports, "addTrainTubeMarker", ()=>addTrainTubeMarker);
+parcelHelpers.export(exports, "addOtherMarker", ()=>addOtherMarker);
 parcelHelpers.export(exports, "addJoinedMarker", ()=>addJoinedMarker);
 parcelHelpers.export(exports, "moveToPopup", ()=>moveToPopup);
 parcelHelpers.export(exports, "removeMarker", ()=>removeMarker);
@@ -822,9 +826,9 @@ const addBusMarker = function(responseData) {
         responseData.lon
     ], {
         icon: _helpers.redIcon
-    }).addTo((0, _model.state).map).bindPopup(`${responseData.modes[0]}: ${responseData.commonName}. Distance: ${Math.trunc(responseData.distance)}m.`);
+    }).addTo((0, _model.state).map).bindPopup(`${responseData.modes[0][0].toUpperCase() + responseData.modes[0].slice(1)}: ${responseData.commonName}. Distance: ${Math.trunc(responseData.distance)}m.`);
 };
-const addTrainTubeMarker = function(responseData) {
+const addOtherMarker = function(responseData) {
     const modes = [];
     responseData.modes?.forEach((mode)=>modes.push(mode));
     L.marker([
@@ -832,24 +836,26 @@ const addTrainTubeMarker = function(responseData) {
         responseData.lon
     ], {
         icon: _helpers.goldIcon
-    }).addTo((0, _model.state).map).bindPopup(`${modes}: ${responseData.commonName}. Distance: ${Math.trunc(responseData.distance)}m.`);
+    }).addTo((0, _model.state).map).bindPopup(`${modes.map((mode)=>mode[0].toUpperCase() + mode.slice(1).replace("-", " "))}: ${responseData.commonName}. Distance: ${Math.trunc(responseData.distance)}m.`);
 };
 const addJoinedMarker = function(responseData) {
     const modes = [];
     responseData.modes?.forEach((mode)=>modes.push(mode));
+    const modesFixed = modes.map((mode)=>mode[0].toUpperCase() + mode.slice(1).replace("-", " "));
     L.marker([
         responseData.lat,
         responseData.lon
     ], {
         icon: _helpers.greenIcon
-    }).addTo((0, _model.state).map).bindPopup(`${modes}: ${responseData.commonName}. Distance: ${Math.trunc(responseData.distance)}m.`);
+    }).addTo((0, _model.state).map).bindPopup(`${modesFixed}: ${responseData.commonName}. Distance: ${Math.trunc(responseData.distance)}m.`);
 };
 const moveToPopup = function(event) {
     const stationElement = event.target.closest(".station");
     if (!stationElement) return;
     document.querySelectorAll(".station").forEach((el)=>el.classList.remove("current-preview"));
     stationElement.classList.add("current-preview");
-    const currentStation = allStations.find((station)=>station.id === stationElement.dataset.id);
+    const currentStation = (0, _model.state).allStations.find((station)=>station.id === stationElement.dataset.id);
+    console.log(currentStation);
     if ((0, _model.state).currentMarker) removeMarker();
     (0, _model.state).map.setView([
         currentStation.lat,
@@ -960,7 +966,7 @@ const greyIcon = new L.Icon({
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "displayBusResults", ()=>displayBusResults);
-parcelHelpers.export(exports, "displayTrainTubeResults", ()=>displayTrainTubeResults);
+parcelHelpers.export(exports, "displayOtherResults", ()=>displayOtherResults);
 parcelHelpers.export(exports, "displayJoinedResults", ()=>displayJoinedResults);
 const transportContainer = document.getElementById("stations-list");
 const displayBusResults = function(responseData) {
@@ -970,8 +976,8 @@ const displayBusResults = function(responseData) {
         <ul>
           <li class="station" data-id="${responseData.id}">
             <span class="station-distance">${Math.trunc(responseData.distance)}m.</span>
-            <span class="station-name">${responseData.commonName}</span>
-            <span class="station-mode">Mode:${responseData.modes[0]}</span>
+            <span class="station-name">${responseData.commonName}(${responseData.indicator})</span>
+            <span class="station-mode">Mode: ${responseData.modes[0][0].toUpperCase() + responseData.modes[0].slice(1)}</span>
             <span class="station-buses">Buses:${buses} </span>
             <span class="station-towards">${responseData.additionalProperties[1]?.key}: ${responseData.additionalProperties[1]?.value}</span>
             
@@ -980,7 +986,7 @@ const displayBusResults = function(responseData) {
           `;
     transportContainer.insertAdjacentHTML("afterbegin", markup);
 };
-const displayTrainTubeResults = function(responseData) {
+const displayOtherResults = function(responseData) {
     let lines = [];
     responseData.lines.forEach((line)=>lines.push(line.name));
     const markup = `
@@ -988,7 +994,7 @@ const displayTrainTubeResults = function(responseData) {
           <li class="station" data-id="${responseData.id}">
             <span class="station-distance">${Math.trunc(responseData.distance)}m.</span>
             <span class="station-name">${responseData.commonName}</span>
-            <span class="station-mode">Mode:${responseData.modes[0]}</span>
+            <span class="station-mode">Mode: ${responseData.modes[0][0].toUpperCase() + responseData.modes[0].slice(1).replace("-", " ")}</span>
             <span class="station-buses">Lines:${lines} </span>
           </li>
         </ul>
@@ -1000,12 +1006,13 @@ const displayJoinedResults = function(responseData) {
     let modes = [];
     responseData.modes?.forEach((mode)=>modes.push(mode));
     responseData.lines.forEach((line)=>lines.push(line.name));
+    const modesFixed = modes.map((mode)=>mode.toUpperCase() + mode.slice(1).replace("-", " "));
     const markup = `
         <ul>
           <li class="station" data-id="${responseData.id}">
             <span class="station-distance">${Math.trunc(responseData.distance)}m.</span>
             <span class="station-name">${responseData.commonName}</span>
-            <span class="station-mode">Mode:${modes}</span>
+            <span class="station-mode">Modes: ${modesFixed}</span>
             <span class="station-buses">Lines:${lines} </span>
           </li>
         </ul>
@@ -1086,7 +1093,7 @@ const getSearchResultsPage = function(arrayOfStations, page = (0, _model.state).
     return arrayOfStations.slice(start, end);
 };
 const paginationButtons = function() {
-    const numPages = Math.ceil(allStations.length / 4);
+    const numPages = Math.ceil((0, _model.state).allStations.length / 4);
     nextButton.innerHTML = "";
     prevButton.innerHTML = "";
     if (!nextButton.classList.contains("hidden")) nextButton.classList.add("hidden");

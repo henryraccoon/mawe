@@ -21,19 +21,23 @@ export const addBusMarker = function (responseData) {
   L.marker([responseData.lat, responseData.lon], { icon: icons.redIcon })
     .addTo(state.map)
     .bindPopup(
-      `${responseData.modes[0]}: ${
-        responseData.commonName
-      }. Distance: ${Math.trunc(responseData.distance)}m.`
+      `${
+        responseData.modes[0][0].toUpperCase() + responseData.modes[0].slice(1)
+      }: ${responseData.commonName}. Distance: ${Math.trunc(
+        responseData.distance
+      )}m.`
     );
 };
 
-export const addTrainTubeMarker = function (responseData) {
+export const addOtherMarker = function (responseData) {
   const modes = [];
   responseData.modes?.forEach((mode) => modes.push(mode));
   L.marker([responseData.lat, responseData.lon], { icon: icons.goldIcon })
     .addTo(state.map)
     .bindPopup(
-      `${modes}: ${responseData.commonName}. Distance: ${Math.trunc(
+      `${modes.map(
+        (mode) => mode[0].toUpperCase() + mode.slice(1).replace("-", " ")
+      )}: ${responseData.commonName}. Distance: ${Math.trunc(
         responseData.distance
       )}m.`
     );
@@ -42,10 +46,13 @@ export const addTrainTubeMarker = function (responseData) {
 export const addJoinedMarker = function (responseData) {
   const modes = [];
   responseData.modes?.forEach((mode) => modes.push(mode));
+  const modesFixed = modes.map(
+    (mode) => mode[0].toUpperCase() + mode.slice(1).replace("-", " ")
+  );
   L.marker([responseData.lat, responseData.lon], { icon: icons.greenIcon })
     .addTo(state.map)
     .bindPopup(
-      `${modes}: ${responseData.commonName}. Distance: ${Math.trunc(
+      `${modesFixed}: ${responseData.commonName}. Distance: ${Math.trunc(
         responseData.distance
       )}m.`
     );
@@ -63,9 +70,10 @@ export const moveToPopup = function (event) {
     .forEach((el) => el.classList.remove("current-preview"));
   stationElement.classList.add("current-preview");
 
-  const currentStation = allStations.find(
+  const currentStation = state.allStations.find(
     (station) => station.id === stationElement.dataset.id
   );
+  console.log(currentStation);
   if (state.currentMarker) removeMarker();
 
   state.map.setView([currentStation.lat, currentStation.lon], 18);

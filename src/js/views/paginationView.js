@@ -19,7 +19,7 @@ export const getSearchResultsPage = function (
 };
 
 export const paginationButtons = function () {
-  const numPages = Math.ceil(allStations.length / 4);
+  const numPages = Math.ceil(state.allStations.length / 4);
   nextButton.innerHTML = "";
   prevButton.innerHTML = "";
   if (!nextButton.classList.contains("hidden")) {
