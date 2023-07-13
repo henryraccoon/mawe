@@ -21,6 +21,7 @@
     <script type="module" src="src/js/controller.js"></script>
     <title>mawe</title>
   </head>
+
   <body>
     <div id="sidebar">
       <img src="logo.png" alt="Logo" />
@@ -34,10 +35,12 @@
         <input type="radio" name="location" id="auto-location" checked />
         <label for="auto-location">Use My Location</label>
       </div>
+
       <div class="form-group-postcode">
         <input type="radio" name="location" id="post-code" />
         <label for="post-code">Enter Post Code</label>
       </div>
+
       <form id="form-group-input">
         <input
           type="text"
@@ -51,12 +54,13 @@
           value="Search"
           style="display: none"
         />
-        <!-- <button id="search-btn">Search</button> -->
       </form>
+
       <div class="form-group walking-preference">
         <input type="checkbox" id="lazy-walker" />
         <label for="not-much-walk">I prefer not to walk much</label>
       </div>
+
       <div class="form-group walking-preference">
         <input type="checkbox" id="good-walker" />
         <label for="bit-further-walk">I don't mind walking a bit further</label>
@@ -65,62 +69,18 @@
 
     <div id="map">
       <h2>Map</h2>
-      <p>Map content goes here.</p>
     </div>
 
-    <div id="results">
+    <div class="tfl-results">
       <h2>Nearest Stations</h2>
       <div id="stations-list"></div>
+
       <div id="pagination">
         <button id="prev-page" class="hidden btn"></button>
         <button id="next-page" class="hidden btn"></button>
       </div>
 
-      <div id="weather-alerts">
-        <!-- <h2>Weather</h2> -->
-        <!-- <div class="current-weather">
-          <img src="weather-icon.png" alt="Weather Icon" />
-          <div class="weather-details">
-            <div class="weather-field">
-              <span class="field-label">Temperature:</span>
-              <span class="field-value">25°C</span>
-            </div>
-            <div class="weather-field">
-              <span class="field-label">Feels Like:</span>
-              <span class="field-value">27°C</span>
-            </div>
-            <div class="weather-field">
-              <span class="field-label">Wind:</span>
-              <span class="field-value">10 km/h</span>
-            </div>
-            <div class="weather-field">
-              <span class="field-label">Humidity:</span>
-              <span class="field-value">60%</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="expected-today">
-          <h3>Expected Today</h3>
-          <div class="weather-field">
-            <span class="field-label">Min Temperature:</span>
-            <span class="field-value">20°C</span>
-          </div>
-          <div class="weather-field">
-            <span class="field-label">Max Temperature:</span>
-            <span class="field-value">28°C</span>
-          </div>
-          <div class="weather-field">
-            <span class="field-label">Chance of Rain:</span>
-            <span class="field-value">40%</span>
-          </div>
-        </div>
-
-        <div class="weather-advice">
-          <h4></h4>
-          <p>Enter your weather advice text here.</p>
-        </div> -->
-      </div>
+      <div id="weather-alerts"></div>
       <div class="weather-advice"></div>
     </div>
   </body>

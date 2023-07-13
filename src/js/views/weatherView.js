@@ -17,7 +17,6 @@ export const renderWeatherView = function (currentWeather, forecastWeather) {
   const adviceMarkup = `<h4>${adviceLogic}</h4>`;
 
   const markup = `
-        <div id="weather-alerts">
           <div class="current-weather">
             <img src="${icon}" alt="Weather Icon" />
             <div class="weather-details">
@@ -54,7 +53,6 @@ export const renderWeatherView = function (currentWeather, forecastWeather) {
               <span class="field-value">${forecastWeather.daily_chance_of_rain}%</span>
             </div>
           </div>
-        </div>
       `;
 
   // Update the weather container with the rendered markup

@@ -1032,7 +1032,7 @@ const renderWeatherView = function(currentWeather, forecastWeather) {
     const adviceLogic = forecastWeather.daily_chance_of_rain > 40 ? "Today might be raining. You should probably take your umbrella." : forecastWeather.mintemp_c < 10 ? "Today is expected to be cool. You might want to take or wear warmer clothes." : "Enjoy good weather today!";
     const adviceMarkup = `<h4>${adviceLogic}</h4>`;
     const markup = `
-        <div id="weather-alerts">
+        
           <div class="current-weather">
             <img src="${icon}" alt="Weather Icon" />
             <div class="weather-details">
@@ -1069,7 +1069,7 @@ const renderWeatherView = function(currentWeather, forecastWeather) {
               <span class="field-value">${forecastWeather.daily_chance_of_rain}%</span>
             </div>
           </div>
-        </div>
+        
       `;
     // Update the weather container with the rendered markup
     weatherContainer.innerHTML = markup;
