@@ -9,6 +9,10 @@ const formInput = document.querySelector("#form-group-input");
 const searchButton = document.getElementById("submit-button");
 const postCodeInput = document.getElementById("post-code-input");
 const transportContainer = document.getElementById("stations-list");
+const mobile_btn = document.querySelector(".hamburger");
+const mediaQuery = window.matchMedia("(max-width: 420px");
+const sidebar = document.querySelector("#sidebar");
+const results = document.querySelector(".tfl-results");
 
 let checkboxLazyWalker = document.getElementById("lazy-walker");
 let checkboxGoodWalker = document.getElementById("good-walker");
@@ -118,6 +122,19 @@ checkboxGoodWalker.addEventListener("change", function () {
       [model.state.latitude, model.state.longitude],
       model.state.mapZoom
     );
+  }
+});
+
+mobile_btn.addEventListener("click", function () {
+  mobile_btn.classList.toggle("is-active");
+  if (mediaQuery.matches) {
+    if (mobile_btn.classList.contains("is-active")) {
+      results.style.display = "none";
+      sidebar.style.display = "flex";
+    } else {
+      results.style.display = "flex";
+      sidebar.style.display = "none";
+    }
   }
 });
 

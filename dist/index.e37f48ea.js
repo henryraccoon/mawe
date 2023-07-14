@@ -587,6 +587,10 @@ const formInput = document.querySelector("#form-group-input");
 const searchButton = document.getElementById("submit-button");
 const postCodeInput = document.getElementById("post-code-input");
 const transportContainer = document.getElementById("stations-list");
+const mobile_btn = document.querySelector(".hamburger");
+const mediaQuery = window.matchMedia("(max-width: 420px");
+const sidebar = document.querySelector("#sidebar");
+const results = document.querySelector(".tfl-results");
 let checkboxLazyWalker = document.getElementById("lazy-walker");
 let checkboxGoodWalker = document.getElementById("good-walker");
 const renderResults = async function(page) {
@@ -678,6 +682,18 @@ checkboxGoodWalker.addEventListener("change", function() {
             _model.state.latitude,
             _model.state.longitude
         ], _model.state.mapZoom);
+    }
+});
+mobile_btn.addEventListener("click", function() {
+    mobile_btn.classList.toggle("is-active");
+    if (mediaQuery.matches) {
+        if (mobile_btn.classList.contains("is-active")) {
+            results.style.display = "none";
+            sidebar.style.display = "flex";
+        } else {
+            results.style.display = "flex";
+            sidebar.style.display = "none";
+        }
     }
 });
 const init = async function() {
@@ -1032,7 +1048,6 @@ const renderWeatherView = function(currentWeather, forecastWeather) {
     const adviceLogic = forecastWeather.daily_chance_of_rain > 40 ? "Today might be raining. You should probably take your umbrella." : forecastWeather.mintemp_c < 10 ? "Today is expected to be cool. You might want to take or wear warmer clothes." : "Enjoy good weather today!";
     const adviceMarkup = `<h4>${adviceLogic}</h4>`;
     const markup = `
-        
           <div class="current-weather">
             <img src="${icon}" alt="Weather Icon" />
             <div class="weather-details">
@@ -1069,7 +1084,6 @@ const renderWeatherView = function(currentWeather, forecastWeather) {
               <span class="field-value">${forecastWeather.daily_chance_of_rain}%</span>
             </div>
           </div>
-        
       `;
     // Update the weather container with the rendered markup
     weatherContainer.innerHTML = markup;

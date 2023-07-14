@@ -1,4 +1,6 @@
 body {
+  width: 100vw;
+  height: 100vh;
   margin: 0;
   font-family: Arial, sans-serif;
   display: flex;
@@ -66,6 +68,7 @@ body {
   flex: 1;
   height: 650px;
   padding: 20px;
+  position: relative;
 }
 
 .tfl-results {
@@ -249,8 +252,21 @@ li {
   background-color: #ddd;
 }
 
+.hamburger {
+  display: none;
+}
+
 @media only screen and (width <= 420px) {
   #sidebar {
+    order: 2;
+    width: 100%;
+    font-size: 22px;
+    display: none;
+    position: absolute;
+    top: 400px;
+  }
+
+  #sidebar img {
     display: none;
   }
 
@@ -261,13 +277,16 @@ li {
   }
 
   #map {
+    order: 1;
     width: 100vw;
     max-width: 100%;
     max-height: 300px;
     padding: 10px;
+    position: relative;
   }
 
   .tfl-results {
+    width: 100vw;
     max-width: 100%;
     padding: 5px;
   }
@@ -281,6 +300,51 @@ li {
     margin-bottom: 3px;
     font-size: 14px;
   }
+
+  .hamburger {
+    cursor: pointer;
+    appearance: none;
+    background: none;
+    border: none;
+    outline: none;
+    width: 39px;
+    height: 32px;
+    display: block;
+    position: absolute;
+    top: 340px;
+    right: 15px;
+  }
+}
+
+.hamburger .bar, .hamburger:after, .hamburger:before {
+  content: "";
+  background-color: #a29b9b;
+  width: 100%;
+  height: 5px;
+  margin: 6px 0;
+  transition: all .4s;
+  display: block;
+}
+
+.hamburger.is-active:before {
+  transform: rotate(-225deg)translate(22px, 7px);
+}
+
+.hamburger.is-active:after {
+  transform: rotate(225deg)translate(22px, -7px);
+}
+
+.hamburger.hamburger.is-active .bar {
+  opacity: 0;
+}
+
+#sidebar p {
+  font-size: 20px;
+}
+
+input[type="checkbox"], input[type="radio"] {
+  width: 24px;
+  height: 24px;
 }
 
 /*# sourceMappingURL=index.3a01df49.css.map */
