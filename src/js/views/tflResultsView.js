@@ -57,7 +57,7 @@ export const displayJoinedResults = function (responseData) {
   responseData.modes?.forEach((mode) => modes.push(mode));
   responseData.lines.forEach((line) => lines.push(line.name));
   const modesFixed = modes.map(
-    (mode) => mode.toUpperCase() + mode.slice(1).replace("-", " ")
+    (mode) => mode[0].toUpperCase() + mode.slice(1).replace("-", " ")
   );
   const markup = `
         <ul>

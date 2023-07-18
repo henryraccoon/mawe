@@ -6,8 +6,8 @@ const autoLocationCheckbox = document.querySelector(
 
 // getting geolocation
 export const state = {
-  latitude: 51.4192772,
-  longitude: -0.3246571,
+  latitude: "",
+  longitude: "",
   map,
   allStations: [],
   currentMarker: "",
@@ -15,7 +15,6 @@ export const state = {
   radius: RADIUS,
   mapZoom: MAPZOOM,
 };
-//51.4192772 -0.3246571
 
 export const getGeolocation = async function () {
   return new Promise(function (resolve, reject) {
@@ -27,12 +26,12 @@ export const getGeolocation = async function () {
             resolve();
           },
           function (err) {
-            alert("could not get your position. try using post code.");
+            alert("Could not get your position. Try using post code.");
             autoLocationCheckbox.style.display = "none";
             reject(`${err.message}`);
           }
         )
-      : alert("could not get your position. try using post code.");
+      : alert("Could not get your position. Try using post code.");
   });
 };
 

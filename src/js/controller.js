@@ -3,6 +3,8 @@ import * as mapView from "./views/mapView";
 import * as tflResultView from "./views/tflResultsView";
 import * as weatherView from "./views/weatherView";
 import * as paginationView from "./views/paginationView";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 const postCodeCheckbox = document.getElementById("post-code");
 const formInput = document.querySelector("#form-group-input");
