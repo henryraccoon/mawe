@@ -4,7 +4,7 @@
   "description": "Public transport application with weather alerts",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html --dist-dir ./dist"
   },
   "author": "Hennadiy Pohribnyy",
   "license": "ISC",
@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "core-js": "^3.31.1",
+    "leaflet": "^1.9.4",
     "regenerator-runtime": "^0.13.11"
   }
 }
