@@ -70,7 +70,7 @@ export const nearestStops = async function () {
 export const fetchWeatherData = async function () {
   try {
     const response = await fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY_WEATHER}&q=${state.latitude},${state.longitude}`
+      `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY_WEATHER}&q=${state.latitude},${state.longitude}`
     );
     const data = await response.json();
     return data;
