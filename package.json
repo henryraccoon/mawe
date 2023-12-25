@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Public transport application with weather alerts",
   "scripts": {
-    "start": "parcel index.html",
+    "start": "parcel index.html --port 4000",
     "build": "parcel build index.html --dist-dir ./dist"
   },
   "author": "Hennadiy Pohribnyy",
